@@ -21,3 +21,5 @@ export default app
 // create separate folder for success and error logs
 // go to winston github docs and see how the format works
 // format the time in the logger according to your needs
+// to auto delete and create separate files on each hour the logs setup winstone daily rotate file
+//
