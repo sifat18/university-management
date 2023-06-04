@@ -14,12 +14,3 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 export default app
-
-// install winston
-// copy the logger code block
-// add the line with console to see the logs in the console
-// create separate folder for success and error logs
-// go to winston github docs and see how the format works
-// format the time in the logger according to your needs
-// to auto delete and create separate files on each hour the logs setup winstone daily rotate file
-//
