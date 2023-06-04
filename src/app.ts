@@ -14,3 +14,8 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 export default app
+
+// install winston
+// copy the logger code block
+// add the line with console to see the logs in the console
+// create separate folder for success and error logs
