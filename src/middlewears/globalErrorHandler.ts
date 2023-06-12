@@ -18,7 +18,7 @@ export const globalErrorHandler: ErrorRequestHandler = (
   let message = 'Something went wrong'
   let errorMessages: IGenericErrorMessage[] = []
 
-  config.env === 'development' ? errorlogger.error(err) : errorlogger.error(err)
+  config.env === 'development' ? console.log(err) : errorlogger.error(err)
 
   if (err?.name === 'ValidationError') {
     const simplifiedError = handleValidationError(err)
