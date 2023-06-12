@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
 // zod validation setup
 export const createUserZodSchema = z.object({
@@ -6,4 +6,4 @@ export const createUserZodSchema = z.object({
     role: z.string({ required_error: 'role is required' }),
   }),
   password: z.string().optional(),
-})
+});

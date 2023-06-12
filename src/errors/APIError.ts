@@ -4,15 +4,15 @@ class APIError extends Error {
     message: string | undefined,
     public stack: ''
   ) {
-    super(message)
-    this.statusCode = statusCode
+    super(message);
+    this.statusCode = statusCode;
     if (stack) {
-      this.stack = stack
+      this.stack = stack;
     } else {
       // sending the reference and this.constructor returns the error stack trace
-      Error.captureStackTrace(this, this?.constructor)
+      Error.captureStackTrace(this, this?.constructor);
     }
   }
 }
 
-export default APIError
+export default APIError;
