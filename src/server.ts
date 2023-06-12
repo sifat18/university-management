@@ -5,6 +5,14 @@ import { errorlogger, logger } from './shared/logger'
 import { Server } from 'http'
 let server: Server
 
+// uncaught exception works in synchronous way so async code will not handle it
+
+process.on('uncaughtException', err => {
+  errorlogger.error('caught the uncaughtException', err)
+  process.exit(1)
+})
+
+// server connection
 async function boostrap() {
   try {
     await mongoose.connect(config.database_url as string)
@@ -29,3 +37,12 @@ process.on('unhandledRejection', err => {
   }
 })
 boostrap()
+// sudden termination of server this is called the SIGTERM, one can manually send this signal to the server to terminate it
+process.on('SIGTERM', () => {
+  logger.info('SIGTERM received, shutting down gracefully')
+  if (server) {
+    server.close(() => {
+      logger.info('Process terminated for SIGTERM')
+    })
+  }
+})

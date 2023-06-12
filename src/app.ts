@@ -17,10 +17,5 @@ app.get('/', (req: Request, res: Response) => {
 })
 // global error handler
 app.use(globalErrorHandler)
-// uncaught exception works in synchronous way so async code will not handle it
-
-// process.on('uncaughtException', (err) => {
-
-// })
 
 export default app
