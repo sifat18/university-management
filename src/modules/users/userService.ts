@@ -21,7 +21,7 @@ export const createUserDB = async (user: IUser): Promise<IUser | null> => {
 };
 
 // last usere
-export const getLastUserDb = async () => {
+export const getLastUserDb = async (): Promise<string | undefined> => {
   const lastUser = await User.findOne({}, { id: 1, _id: 0 })
     .sort({ createdAt: -1 })
     .lean();

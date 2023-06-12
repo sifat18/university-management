@@ -2,7 +2,7 @@ class APIError extends Error {
   constructor(
     public statusCode: number,
     message: string | undefined,
-    public stack: ''
+    public stack = ''
   ) {
     super(message);
     this.statusCode = statusCode;
