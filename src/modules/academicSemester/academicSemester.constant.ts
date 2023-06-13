@@ -38,3 +38,4 @@ export const academicSemesterTitleCodeMapper: {
   Summer: '02',
   Fall: '03',
 };
+export const paginationFields = ['page', 'limit', 'sortBy', 'sortOrder'];

@@ -1,9 +1,10 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import { globalErrorHandler } from './middlewears/globalErrorHandler';
 // import { UserRoutes } from './modules/users/userRoutes';
 // import { AcademicSemesterRoutes } from './modules/academicSemester/academicSemester.route';
 import routes from './routes';
+import { httpStatus } from 'http-status';
 const app: Application = express();
 
 app.use(cors());
@@ -21,4 +22,18 @@ app.get('/', (req: Request, res: Response) => {
 // global error handler
 app.use(globalErrorHandler);
 
+// route not found
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(httpStatus.NOT_FOUND).json({
+    success: false,
+    message: 'Not Found',
+    errorMessages: [
+      {
+        path: req.originalUrl,
+        message: 'api not found',
+      },
+    ],
+  });
+  next();
+});
 export default app;
