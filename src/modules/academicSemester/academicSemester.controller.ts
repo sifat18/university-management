@@ -17,18 +17,18 @@ const createSemester = catchAsync(
       academicSemesterData
     );
 
-    // sendResponse<IAcademicSemester>(res, {
-    //   statusCode: httpStatus.OK,
-    //   success: true,
-    //   message: 'Aademic semester created successfully!',
-    //   data: result,
-    // });
+    sendResponse<IAcademicSemester>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Aademic semester created successfully!',
+      data: result,
+    });
     next();
   }
 );
 
 export const getAllSemester = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response) => {
     // const paginationOptions = {
     //   page: Number(req.query.page),
     //   limit: Number(req.query.limit),
@@ -50,8 +50,51 @@ export const getAllSemester = catchAsync(
     });
   }
 );
+export const getSingleSemester = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+
+    const result = await AcademicSemesterService.getSingleSemester(id);
+
+    sendResponse<IAcademicSemester>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Semester retrieved successfully !',
+      data: result,
+    });
+  }
+);
+const updateSemester = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const updatedData = req.body;
+  // findby id bypasses the pre save hook and findByIdAndUpdate does not
+  const result = await AcademicSemesterService.updateSemester(id, updatedData);
+
+  sendResponse<IAcademicSemester>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Semester updated successfully !',
+    data: result,
+  });
+});
+
+const deleteSemester = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const result = await AcademicSemesterService.deleteSemester(id);
+
+  sendResponse<IAcademicSemester>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Semester deleted successfully !',
+    data: result,
+  });
+});
 
 export const AcademicSemesterController = {
   createSemester,
   getAllSemester,
+  getSingleSemester,
+  updateSemester,
+  deleteSemester,
 };
