@@ -1,14 +1,14 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { createUserDB } from './userService';
+import { createStudentDB } from './userService';
 import sendResponse from '../../shared/sendResponse';
 import httpStatus from 'http-status';
 import { IUser } from './userInterface';
 import catchAsync from '../../shared/catchAsync';
-export const createUser: RequestHandler = catchAsync(
+export const createStudent: RequestHandler = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { user } = req.body;
-      const result = await createUserDB(user);
+      const { student, ...userData } = req.body;
+      const result = await createStudentDB(student, userData);
       // res.status(200).json({
       //   success: true,
       //   message: 'User created Successfully',

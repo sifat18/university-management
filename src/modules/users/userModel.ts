@@ -10,6 +10,9 @@ const userSchema = new Schema<IUser>(
     },
     password: { type: String, required: true },
     role: { type: String, required: true },
+    student: { type: Schema.Types.ObjectId, ref: 'Student' },
+    // faculty: { type: Schema.Types.ObjectId, ref: 'Faculty' },
+    // Admin: { type: Schema.Types.ObjectId, ref: 'Admin' },
   },
   {
     timestamps: true,

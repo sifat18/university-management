@@ -1,10 +1,14 @@
 import express from 'express';
-import { createUser } from './userController';
+import { createStudent } from './userController';
 import { validateRequest } from '../../middlewears/validateRequest';
 import { createUserZodSchema } from './userValidation';
 
 const router = express.Router();
 
-router.post('/create', validateRequest(createUserZodSchema), createUser);
+router.post(
+  '/create-student',
+  validateRequest(createUserZodSchema),
+  createStudent
+);
 
 export const UserRoutes = router;
