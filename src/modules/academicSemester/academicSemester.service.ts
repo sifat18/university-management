@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-// import ApiError from '../../../errors/ApiError';
+import { SortOrder } from 'mongoose';
 import {
   academicSemesterSearchableFields,
   academicSemesterTitleCodeMapper,
@@ -13,34 +13,35 @@ import APIError from '../../errors/APIError';
 import { IPaginationOptions } from '../../interfaces/pagination';
 import { IGenericResponse } from '../../interfaces/error';
 import { paginationHelpers } from '../../helprs/paginationHelper';
-import { SortOrder } from 'mongoose';
 
 const createSemester = async (
   payload: IAcademicSemester
 ): Promise<IAcademicSemester> => {
-  // Summer  02 !=== 03
   if (academicSemesterTitleCodeMapper[payload.title] !== payload.code) {
     throw new APIError(httpStatus.BAD_REQUEST, 'Invalid Semester Code');
   }
-
   const result = await AcademicSemester.create(payload);
   return result;
 };
+
+const getSingleSemester = async (
+  id: string
+): Promise<IAcademicSemester | null> => {
+  const result = await AcademicSemester.findById(id);
+  return result;
+};
+
 const getAllsemesters = async (
   filters: IAcademicSemesterFilters,
   paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<IAcademicSemester[]>> => {
+  // Extract searchTerm to implement search query
   const { searchTerm, ...filtersData } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
-  // sorty
-  const sortConditions: { [key: string]: SortOrder } = {};
-  if (sortBy && sortOrder) {
-    sortConditions[sortBy] = sortOrder;
-  }
-  // search & filters
-  const andConditions = [];
 
+  const andConditions = [];
+  // Search needs $or for searching in specified fields
   if (searchTerm) {
     andConditions.push({
       $or: academicSemesterSearchableFields.map(field => ({
@@ -59,14 +60,22 @@ const getAllsemesters = async (
       })),
     });
   }
-  // check if filter exists or not
+
+  // Dynamic  Sort needs  field to  do sorting
+  const sortConditions: { [key: string]: SortOrder } = {};
+  if (sortBy && sortOrder) {
+    sortConditions[sortBy] = sortOrder;
+  }
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
+
   const result = await AcademicSemester.find(whereConditions)
-    .sort()
+    .sort(sortConditions)
     .skip(skip)
     .limit(limit);
+
   const total = await AcademicSemester.countDocuments();
+
   return {
     meta: {
       page,
@@ -75,13 +84,6 @@ const getAllsemesters = async (
     },
     data: result,
   };
-};
-
-const getSingleSemester = async (
-  id: string
-): Promise<IAcademicSemester | null> => {
-  const result = await AcademicSemester.findById(id);
-  return result;
 };
 
 const updateSemester = async (
@@ -108,10 +110,11 @@ const deleteSemester = async (
   const result = await AcademicSemester.findByIdAndDelete(id);
   return result;
 };
+
 export const AcademicSemesterService = {
   createSemester,
-  getAllsemesters,
   getSingleSemester,
+  getAllsemesters,
   updateSemester,
   deleteSemester,
 };
