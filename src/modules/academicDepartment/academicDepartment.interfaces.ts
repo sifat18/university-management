@@ -1,5 +1,6 @@
 import { Model, Types } from 'mongoose';
-import { IAcademicFaculty } from '../../academicFaculty/academicFaculty/academicFaculty.interfaces';
+import { IAcademicFaculty } from '../academicFaculty/academicFaculty.interfaces';
+// import { IAcademicFaculty } from '../academicFaculty/academicFaculty.interfaces';
 
 export type IAcademicDepartment = {
   title: string;
